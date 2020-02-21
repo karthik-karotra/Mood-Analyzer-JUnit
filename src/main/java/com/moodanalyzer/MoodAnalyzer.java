@@ -5,6 +5,7 @@ import com.moodanalyzerexception.MoodAnalyzerException;
 public class MoodAnalyzer {
     private String mood;
     public MoodAnalyzer() {
+        mood="Default";
     }
     public MoodAnalyzer(String mood) {
         this.mood = mood;
@@ -24,5 +25,10 @@ public class MoodAnalyzer {
             throw new MoodAnalyzerException(MoodAnalyzerException.ExceptionType.IS_NULL,"Entered string is null.Please enter valid string");
         }
 
+    }
+    public boolean equals(Object another) {
+        if(this.mood.equals(((MoodAnalyzer) another).mood))
+            return true;
+        return false;
     }
 }
