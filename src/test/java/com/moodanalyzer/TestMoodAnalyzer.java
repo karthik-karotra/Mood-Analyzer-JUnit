@@ -3,7 +3,6 @@ import com.moodanalyzerexception.MoodAnalyzerException;
 import org.junit.Assert;
 import org.junit.Test;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 public class TestMoodAnalyzer {
     private MoodAnalyzer moodAnalyzer;
@@ -67,6 +66,7 @@ public class TestMoodAnalyzer {
         }
     }
 
+    //Comparing two objects are equal or not using default constructors
     @Test
     public void givenMoodAnalyzerClassUsingDefaultConstructor_WhenProper_ShouldReturnObject() {
         try {
@@ -77,6 +77,7 @@ public class TestMoodAnalyzer {
         }
     }
 
+    //Comparing two objects are equal or not using parameterized constructors
     @Test
     public void givenMoodAnalyzerClassUsingParameterizedConstructor_WhenProper_ShouldReturnObject() {
         try {
@@ -87,6 +88,7 @@ public class TestMoodAnalyzer {
         }
     }
 
+    //No such class exception using reflection
     @Test
     public void givenClassName_WhenImproper_ShouldThrowMoodAnalyzerException() {
         try {
@@ -96,6 +98,7 @@ public class TestMoodAnalyzer {
         }
     }
 
+    //No such method exception using reflection
     @Test
     public void givenClassName_WhenProperWithImproperConstructor_ShouldThrowMoodAnalyzerException() {
         try {
@@ -105,5 +108,29 @@ public class TestMoodAnalyzer {
         }
     }
 
+    //Invoking Methods and comparing message
+    @Test
+    public void givenProperMethodName_WhenInvoked_ShouldReturnHappy() {
+        try {
+
+            MoodAnalyzer moodObject = MoodAnalyzerFactory.createMoodAnalyzer("I am in Happy Mood");
+            String mood = MoodAnalyzerFactory.invokeMethod(moodObject, "analyzeMood");
+            Assert.assertEquals("Happy", mood);
+        } catch (MoodAnalyzerException e) {
+            Assert.assertEquals(MoodAnalyzerException.ExceptionType.NO_SUCH_METHOD, e.type);
+        }
+    }
+
+    //Invoking Methods : If method name not found then throw no such method exception
+    @Test
+    public void givenMethodName_WhenNotProper_ShouldThrowMoodAnalyzerException() {
+        try {
+
+            MoodAnalyzer moodObject = MoodAnalyzerFactory.createMoodAnalyzer("I am in Happy Mood");
+            MoodAnalyzerFactory.invokeMethod(moodObject,"analyzeMood1");
+        } catch (MoodAnalyzerException e) {
+            Assert.assertEquals(MoodAnalyzerException.ExceptionType.NO_SUCH_METHOD, e.type);
+        }
+    }
 
 }
