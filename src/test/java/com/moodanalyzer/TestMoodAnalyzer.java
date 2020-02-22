@@ -36,7 +36,7 @@ public class TestMoodAnalyzer {
         try {
             moodAnalyzer.analyzeMood();
         } catch (MoodAnalyzerException e) {
-            Assert.assertEquals(MoodAnalyzerException.ExceptionType.IS_NULL, e.type);
+            Assert.assertEquals(MoodAnalyzerException.ExceptionType.ENTERED_NULL, e.type);
         }
     }
 
@@ -47,7 +47,7 @@ public class TestMoodAnalyzer {
             moodAnalyzer.analyzeMood();
 
         } catch (MoodAnalyzerException e) {
-            Assert.assertEquals(MoodAnalyzerException.ExceptionType.IS_EMPTY, e.type);
+            Assert.assertEquals(MoodAnalyzerException.ExceptionType.ENTERED_EMPTY, e.type);
         }
     }
 
@@ -130,6 +130,40 @@ public class TestMoodAnalyzer {
             MoodAnalyzerFactory.invokeMethod(moodObject,"analyzeMood1");
         } catch (MoodAnalyzerException e) {
             Assert.assertEquals(MoodAnalyzerException.ExceptionType.NO_SUCH_METHOD, e.type);
+        }
+    }
+
+    //Set field(variable) value at runtime using reflection
+    @Test
+    public void givenFieldNameAndItsValue_WhenProper_ShouldReturnValue() {
+        try {
+            MoodAnalyzer moodObject = MoodAnalyzerFactory.createMoodAnalyzer();
+            String mood = MoodAnalyzerFactory.setFieldValue(moodObject, "Happy", "mood");
+            Assert.assertEquals("Happy", mood);
+        } catch (MoodAnalyzerException e) {
+            Assert.assertEquals(MoodAnalyzerException.ExceptionType.NO_SUCH_METHOD, e.type);
+        }
+    }
+
+    //When field value not present throw exception
+    @Test
+    public void givenFieldNameAndItsValue_WhenFieldNotFound_ShouldThrowMoodAnalyzerException() {
+        try {
+            MoodAnalyzer moodObject = MoodAnalyzerFactory.createMoodAnalyzer();
+            String mood = MoodAnalyzerFactory.setFieldValue(moodObject, "Happy", "mood");
+        } catch (MoodAnalyzerException e) {
+            Assert.assertEquals(MoodAnalyzerException.ExceptionType.NO_SUCH_FIELD, e.type);
+        }
+    }
+
+    //Set null value to field dynamically using reflection it throws exception
+    @Test
+    public void givenFieldNameAndNullValue_ShouldThrowMoodAnalyzerExceptionTest3() {
+        try {
+            MoodAnalyzer moodObject = MoodAnalyzerFactory.createMoodAnalyzer();
+            String mood = MoodAnalyzerFactory.setFieldValue(moodObject, null, "mood");
+        } catch (MoodAnalyzerException e) {
+            Assert.assertEquals(MoodAnalyzerException.ExceptionType.METHOD_INVOCATION_ISSUE, e.type);
         }
     }
 

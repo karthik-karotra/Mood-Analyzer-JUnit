@@ -1,5 +1,4 @@
 package com.moodanalyzer;
-
 import com.moodanalyzerexception.MoodAnalyzerException;
 
 public class MoodAnalyzer {
@@ -17,12 +16,12 @@ public class MoodAnalyzer {
                 return "Sad";
             }
             else if(mood.isEmpty()) {
-                throw new MoodAnalyzerException(MoodAnalyzerException.ExceptionType.IS_EMPTY,"String entered is empty.Please enter valid string");
+                throw new MoodAnalyzerException(MoodAnalyzerException.ExceptionType.ENTERED_EMPTY,"String entered is empty.Please enter valid string");
             }
                 return "Happy";
         }
         catch(NullPointerException ex) {
-            throw new MoodAnalyzerException(MoodAnalyzerException.ExceptionType.IS_NULL,"Entered string is null.Please enter valid string");
+            throw new MoodAnalyzerException(MoodAnalyzerException.ExceptionType.ENTERED_NULL,"Entered string is null.Please enter valid string");
         }
 
     }

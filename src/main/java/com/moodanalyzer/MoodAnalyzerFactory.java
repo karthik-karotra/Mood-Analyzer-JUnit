@@ -1,10 +1,8 @@
 package com.moodanalyzer;
-
 import com.moodanalyzerexception.MoodAnalyzerException;
-
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 
 public class MoodAnalyzerFactory {
@@ -63,5 +61,21 @@ public class MoodAnalyzerFactory {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String setFieldValue(MoodAnalyzer obj, String message, String fieldName) {
+        try {
+            Field field = obj.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(obj, message);
+            return (String) obj.getClass().getDeclaredMethod("analyzeMood").invoke(obj);
+        } catch (NoSuchFieldException e) {
+            throw new MoodAnalyzerException(MoodAnalyzerException.ExceptionType.NO_SUCH_FIELD, e.getMessage());
+        } catch (IllegalAccessException | NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            throw new MoodAnalyzerException(MoodAnalyzerException.ExceptionType.METHOD_INVOCATION_ISSUE, e.getMessage());
+        }
+        return "message";
     }
 }
